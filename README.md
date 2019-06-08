@@ -1,5 +1,4 @@
-# ZED-F9P FeatherWing
- USB
+# ZED-F9P FeatherWing USB
 
 An **untested** GNSS FeatherWing incorporating the dual-band (L1 + L2) [u-blox ZED-F9P](https://www.u-blox.com/en/product/zed-f9p-module)
 
