@@ -6837,7 +6837,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </class>
 </classes>
 <parts>
-<part name="LED1" library="microbuilder" deviceset="LED" device="0805_NOOUTLINE" value="RED"/>
+<part name="PPS" library="microbuilder" deviceset="LED" device="0805_NOOUTLINE" value="RED"/>
 <part name="U$3" library="microbuilder" deviceset="3.3V" device=""/>
 <part name="U$4" library="microbuilder" deviceset="3.3V" device=""/>
 <part name="C1" library="microbuilder" deviceset="CAP_CERAMIC" device="0805-NOOUTLINE" value="10uF"/>
@@ -6925,7 +6925,7 @@ https://cdn.sparkfun.com/assets/0/3/c/a/4/Qwiic_GPS-RTK2_-_ublox_ZED-F9P.zip</te
 <text x="121.92" y="93.98" size="1.778" layer="94">POWER AND FILTERING</text>
 </plain>
 <instances>
-<instance part="LED1" gate="G$1" x="243.84" y="144.78" smashed="yes" rot="R270">
+<instance part="PPS" gate="G$1" x="243.84" y="144.78" smashed="yes" rot="R270">
 <attribute name="NAME" x="248.285" y="146.05" size="1.27" layer="95" rot="R270" align="center"/>
 <attribute name="VALUE" x="241.046" y="146.05" size="1.27" layer="96" rot="R270" align="center"/>
 </instance>
@@ -7181,7 +7181,7 @@ https://cdn.sparkfun.com/assets/0/3/c/a/4/Qwiic_GPS-RTK2_-_ublox_ZED-F9P.zip</te
 </segment>
 <segment>
 <pinref part="U$13" gate="G$1" pin="GND"/>
-<pinref part="LED1" gate="G$1" pin="C"/>
+<pinref part="PPS" gate="G$1" pin="C"/>
 <wire x1="243.84" y1="139.7" x2="243.84" y2="142.24" width="0.1524" layer="91"/>
 </segment>
 <segment>
@@ -7340,7 +7340,7 @@ https://cdn.sparkfun.com/assets/0/3/c/a/4/Qwiic_GPS-RTK2_-_ublox_ZED-F9P.zip</te
 <label x="167.64" y="119.38" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="GRESET" class="0">
+<net name="!RESET" class="0">
 <segment>
 <label x="17.78" y="40.64" size="1.778" layer="95"/>
 <wire x1="17.78" y1="40.64" x2="33.02" y2="40.64" width="0.1524" layer="91"/>
@@ -7380,7 +7380,7 @@ https://cdn.sparkfun.com/assets/0/3/c/a/4/Qwiic_GPS-RTK2_-_ublox_ZED-F9P.zip</te
 </net>
 <net name="N$2" class="0">
 <segment>
-<pinref part="LED1" gate="G$1" pin="A"/>
+<pinref part="PPS" gate="G$1" pin="A"/>
 <wire x1="243.84" y1="149.86" x2="243.84" y2="152.4" width="0.1524" layer="91"/>
 <pinref part="R1" gate="G$1" pin="2"/>
 </segment>
