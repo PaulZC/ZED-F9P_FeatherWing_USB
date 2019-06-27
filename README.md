@@ -4,12 +4,12 @@ A GNSS FeatherWing incorporating the dual-band (L1 + L2) [u-blox ZED-F9P](https:
 
 The board can be used stand-alone, powered and interfaced through the USB connector:
 
-![USB_Power](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/USB_Power.PNG)
+![USB_Power](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/USB_Power.JPG)
 
 However, it is designed to mount on top of the [Adafruit Feather M0 Adalogger](https://www.adafruit.com/products/2796)
 to form a very compact dual-band PPK data logger or RTK system:
 
-![Stack](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/Stack.PNG)
+![Stack](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/Stack.JPG)
 
 This version provides access to the ZED-F9P's USB port. The [ZED-F9P_FeatherWing](https://github.com/PaulZC/ZED-F9P_FeatherWing) is a simpler version
 with fewer components and a CR1220 back-up battery but without USB.

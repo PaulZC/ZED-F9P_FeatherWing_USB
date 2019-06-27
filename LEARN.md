@@ -6,16 +6,16 @@ into Adafruit FeatherWing format.
 
 The board can be used stand-alone, powered and interfaced through the USB connector:
 
-![USB_Power](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/USB_Power.PNG)
+![USB_Power](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/USB_Power.JPG)
 
 However, it is designed to mount on top of the [Adafruit Feather M0 Adalogger](https://www.adafruit.com/products/2796)
 to form a very compact dual-band PPK data logger or RTK system, especially when coupled with:
 - A [SparkFun Bluetooth Mate Gold](https://www.sparkfun.com/products/12580) to provide the Real Time Correction Message link
 - A [RAWX_Logger_Switches board](https://github.com/PaulZC/RAWX_Logger_Switches) to provide on/off, base/rover, survey_in, event and stop-logging buttons plus a NeoPixel for visual feedback
 
-![Stack](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/Stack.PNG)
+![Stack](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/Stack.JPG)
 
-![Adalogger](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/Adalogger.PNG)
+![Adalogger](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/Adalogger.JPG)
 
 ![Dimensions](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/Dimensions.PNG)
 
