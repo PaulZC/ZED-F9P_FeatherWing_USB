@@ -15,6 +15,8 @@ to form a very compact dual-band PPK data logger or RTK system, especially when 
 
 ![Stack](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/Stack.JPG)
 
+![Kit](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/Kit.JPG)
+
 ![Adalogger](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/Adalogger.JPG)
 
 ![Dimensions](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/Dimensions.PNG)
@@ -29,7 +31,9 @@ to form a very compact dual-band PPK data logger or RTK system, especially when 
 
 The FeatherWing can be powered through:
 - The micro-USB connector
-- The standard FeatherWing battery and VBUS (USB) pins
+- The standard FeatherWing LiPo battery and VBUS (USB) pins
+
+The average current draw is approximately 140mA in Survey_In mode when powering the Adalogger, SparkFun Bluetooth Mate Gold and a Taoglas A.80.A.101111 antenna. Select your LiPo battery capacity accordingly!
 
 The board has its own regulator which will regulate battery or USB power down to 3.3V.
 

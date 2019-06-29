@@ -55,7 +55,16 @@ tin-lead solder instead of lead-free.
 Position the components onto the blobs of solder paste using tweezers. A magnifier lamp or a USB microscope will
 help you place the components in the correct position. You may find the [SMT_Component_Placer](https://github.com/PaulZC/SMT_Component_Placer) useful.
 
-Take extra time when positioning the ZED-F9P. It is an expensive chip and all of the pads are hidden. Line it up with carefully with the white marks.
+I recommend placing the ZED-F9P first, while the solder paste is fresh. Take extra time when positioning the ZED-F9P. It is an expensive chip and all of the pads are hidden.
+Line it up with carefully with the white marks. You will find the OpenSCAD and STL files for a positioning jig in the [OpenSCAD folder](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/tree/master/OpenSCAD)
+
+![Jig1](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/Jig1.JPG)
+
+![Jig2](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/Jig2.JPG)
+
+![Jig3](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/Jig3.JPG)
+
+**The lithium battery B1 is NOT reflow compatible. You will need to solder it by hand.**
 
 ![Assembly_5](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/Assembly_5.JPG)
 
