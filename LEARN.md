@@ -4,6 +4,8 @@ Based extensively on the [Adafruit Ultimate GPS FeatherWing](https://www.adafrui
 [SparkFun GPS-RTK2 Board](https://www.sparkfun.com/products/15136), the ZED-F9P FeatherWing USB takes all the great features of the GPS-RTK2 and squeezes them
 into Adafruit FeatherWing format.
 
+![Assembly_9](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/Assembly_9.JPG)
+
 The board can be used stand-alone, powered and interfaced through the USB connector:
 
 ![USB_Power](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/USB_Power.JPG)
@@ -13,9 +15,9 @@ to form a very compact dual-band PPK data logger or RTK system, especially when 
 - A [SparkFun Bluetooth Mate Gold](https://www.sparkfun.com/products/12580) to provide the Real Time Correction Message link
 - A [RAWX_Logger_Switches board](https://github.com/PaulZC/RAWX_Logger_Switches) to provide on/off, base/rover, survey_in, event and stop-logging buttons plus a NeoPixel for visual feedback
 
-![Stack](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/Stack.JPG)
-
 ![Kit](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/Kit.JPG)
+
+![Stack](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/Stack.JPG)
 
 ![Adalogger](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/Adalogger.JPG)
 
@@ -41,6 +43,10 @@ The 3V3 pin can be connected by soldering the 3V3 split pad. Only do this if you
 the 3.3V regulators will fight each other and bad things may happen!
 
 The power regulator circuit was gratefully plagiarised from the design for the [Adafruit AirLift FeatherWing](https://www.adafruit.com/product/4264).
+
+You can disable the regulator and power down the board by pulling the EN pin low.
+
+![EN](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/EN.JPG)
 
 ### USB
 
@@ -70,6 +76,8 @@ The Zed-F9P's I2C pins are conected to the standard Feather SCL and SDA pins. Pu
 You can isolate the Feather pins if you need to by cutting the SDA and SCL links; you can use the extra pins in the center of the board instead.
 
 ### SAFEBOOT
+
+![Safeboot](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/Safeboot.JPG)
 
 The ZED-F9P's SAFEBOOT pin is broken out on a test pad on the bottom of the board. You will need access to this if you want to upgrade the ZED-F9P's firmware.
 

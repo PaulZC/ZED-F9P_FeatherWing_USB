@@ -6,14 +6,14 @@ to provide a 115200 Baud Real Time Correction Message link.
 If you are going to use two FeatherWing systems to form a Base and Rover pair, you will need to pair the Bluetooth Mates with each other so that they automatically
 connect to each other on power up (without needing any extra 'connect' commands).
 
-You can find instructions on how to configure the Bluetooth Mate on the [SperkFun website](https://learn.sparkfun.com/tutorials/using-the-bluesmirf/all). I have found that
+You can find instructions on how to configure the Bluetooth Mate on the [SparkFun website](https://learn.sparkfun.com/tutorials/using-the-bluesmirf/all). I have found that
 configuring the Mates as Master and Slave works up to a point, but the Mates don't automatically reconnect after the Slave has been powered off and on again. I have found
 that the best solution is to configure them as a bonded pair.
 
 I've tested the following on RN41s programmed with Version 6.15 (04/26/2013) firmware.
 
 You will need to know the MAC ID's of both boards. You can either read this off the sticker on top of the RN41 chip, or use the 'D' command via the serial monitor.
-It is a 12 digit number starting with 000666.
+It is a 12 digit hexadecimal number starting with 000666.
 
 You can use the Adalogger as a USB to serial pass-though and configure the boards using the Arduino IDE serial monitor. The
 [Arduino folder](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/tree/master/Arduino) contains a sketch called 'Bluetooth_Mate_Echo'. This does the same job as
@@ -44,9 +44,9 @@ Repeat this on the other Mate. For the SR command, use the MAC ID of the first m
 When both Mates are powered up, the green connect LED should light up within a couple of seconds.
 
 If the above does not work correctly and you have changed the settings previously, it might be best to do a factory reset. Enter command mode, send **SF,1** and then **R,1** .
-The **SF,1** sets the RN41 back to the factory settings. **R,1** reboots the RN41. Enter command mode again and repeat the above.
+The **SF,1** sets the RN41 back to the factory settings. **R,1** reboots the RN41. Enter command mode again and repeat the above procedure.
 
-Make sure you send the **SX** command _before_ the **SR** command. SX clears any previously stored remote addresses.
+Make sure you send the **SX** command _before_ the **SR** command as SX clears any previously stored remote addresses.
 
 You can use the 'D' command to check if the configuration has been changed. You should see 'Mode=Pair', 'Authen=0', 'Bonded=1' and 'Rem=' should be followed by the MAC ID of the paired RN41.
 

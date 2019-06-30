@@ -49,7 +49,7 @@ The code does work nicely though and I do prefer it over the UART-only version.
 
 You can find instructions on how to install the Arduino IDE and the required libraries [here](https://github.com/PaulZC/F9P_RAWX_Logger/blob/master/SOFTWARE.md).
 
-The code has three 'modes': Rover, Base and Survey_In. The mode is set by pins A0 and A3 via the [RAWX Logger Switches](https://github.com/PaulZC/RAWX_Logger_Switches). The RAWX
+The code has three 'modes': Rover, Base and Survey_In. The mode is set via pins A0 and A3 by the [RAWX Logger Switches](https://github.com/PaulZC/RAWX_Logger_Switches). The RAWX
 messages are logged to SD card in all three modes for post-processing with [rtklibexplorer's](https://rtklibexplorer.wordpress.com/) version of [RTKLIB](http://rtkexplorer.com/downloads/rtklib-code/).
 
 You will find settings in the code to help with debugging should you need it. Uncomment the line which contains **#define DEBUG** to enable them.
