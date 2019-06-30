@@ -42,9 +42,12 @@ Use the two round fiducials to line up the stencil with the PCB. Secure the sten
 
 ![Assembly_2](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/Assembly_2.JPG)
 
-Apply solder paste close to the component cut-outs and then scrape the paste over the stencil using a knife blade
-or a similar straight edge. Take appropriate safety precautions when working with solder paste - particularly if you are using
-tin-lead solder instead of lead-free.
+Apply solder paste close to the component cut-outs and then scrape the paste over the stencil using a knife blade or a similar straight edge.
+Apply reasonable pressure to keep the stencil held firmly against the circuit board. Try to apply the solder paste in a single pass.
+Avoid multiple passes as this will force extra paste into the spaces between the ZED-F9P's pads and could lead to shorts. If in doubt, wash the
+paste off with IPA and start again. You need a lot less paste than you might think.
+
+Take appropriate safety precautions when working with solder paste - particularly if you are using tin-lead solder instead of lead-free.
 
 ![Assembly_3](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/Assembly_3.JPG)
 
@@ -56,7 +59,7 @@ Position the components onto the blobs of solder paste using tweezers. A magnifi
 help you place the components in the correct position. You may find the [SMT_Component_Placer](https://github.com/PaulZC/SMT_Component_Placer) useful.
 
 I recommend placing the ZED-F9P first, while the solder paste is fresh. Take extra time when positioning the ZED-F9P. It is an expensive chip and all of the pads are hidden.
-Line it up with carefully with the white marks. You will find the OpenSCAD and STL files for a positioning jig in the [OpenSCAD folder](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/tree/master/OpenSCAD)
+Line it up with carefully with the white marks. You will find the OpenSCAD and STL files for a positioning jig in the [OpenSCAD folder](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/tree/master/OpenSCAD).
 
 ![Jig1](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/Jig1.JPG)
 
