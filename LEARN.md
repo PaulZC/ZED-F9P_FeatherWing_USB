@@ -95,8 +95,8 @@ The FeatherWing includes mounting pads for a full size, robust, edge-launch SMA 
 
 ![EXTINT](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/EXTINT.JPG)
 
-The ZED-F9P's EXTINT (External Interrupt) pin is linked to the Feather A2 (D16) pin. By pushing the EVENT pin on the RAWX_Logger_Switches board, you can make the ZED-F9P
-generate a TIM-TM2 message which can be logged to SD card and extracted with RTKLIB. The RAWX_Logger_F9P code uses A2 as an interrupt to make the NeoPixel on the Switches board flash white.
+The ZED-F9P's EXTINT (External Interrupt) pin is linked to the Feather A2 (D16) pin. By pushing the EVENT switch on the RAWX_Logger_Switches board, you can make the ZED-F9P
+generate a TIM_TM2 message which can be logged to SD card and extracted with RTKLIB. The RAWX_Logger_F9P code uses A2 as an interrupt to make the NeoPixel on the Switches board flash white.
 
 You can isolate the Feather A2 pin by cutting the INT link.
 
