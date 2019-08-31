@@ -56,7 +56,7 @@ You will find settings in the code to help with debugging should you need it. Un
 
 u-blox released [version 1.12](https://www.u-blox.com/sites/default/files/UBX_F9_100_HPG_112_ZED_F9P.a26bfd58dfd11c233f8fdba6b99adc5a.bin) of the ZED-F9P firmware
 on 12th July 2019. If you bought your device(s) before then, it would be beneficial to update. The update process is straight forward and can be done through
-[u-center](https://www.u-blox.com/en/product/u-center) **but the update can only be done through UART1. It will fail if you try to update through USB.**
+the Tools menu in [u-center](https://www.u-blox.com/en/product/u-center) **but the update can only be done through UART1. It will fail if you try to update through USB.**
 
 The [Arduino folder](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/tree/master/Arduino) contains a sketch called ZED-F9P_Echo. This will turn the Adalogger into
 a simple USB to UART pass-through which you can use to update the ZED-F9P using u-center. The code runs at **9600 Baud only** so you must tick the
