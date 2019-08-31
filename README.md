@@ -42,10 +42,8 @@ Two versions of the Arduino code can be found in the [Arduino folder](https://gi
 - **RAWX_Logger_F9P** is very similar to the logger I wrote for the [NEO-M8T FeatherWing](https://github.com/PaulZC/NEO-M8T_GNSS_FeatherWing) but is substantially updated for the ZED-F9P.
 It does all of the message configuration via UART1.
 
-- **RAWX_Logger_F9P_I2C** is a little more experimental. It uses the SparkFun Ublox library to do all of the message configuration via the I2C port instead of UART1. This makes
-the code more efficient as it does not need to ignore the UBX ACK messages (on UART1) and can simply stream all data from UART1 to the SD card. The code is only experimental
-as it uses sendCommand to send a custom ubxPacket and the ACK gets ignored as the [code expects it to be in a different place](https://github.com/sparkfun/SparkFun_Ublox_Arduino_Library/issues/23).
-The code does work nicely though and I do prefer it over the UART-only version.
+- **RAWX_Logger_F9P_I2C** uses **version 1.6** of the SparkFun Ublox library to do all of the message configuration via the I2C port instead of UART1. This makes
+the code more efficient as it does not need to ignore the UBX ACK messages (on UART1) and can simply stream all data from UART1 to the SD card.
 
 You can find instructions on how to install the Arduino IDE and the required libraries [here](https://github.com/PaulZC/F9P_RAWX_Logger/blob/master/SOFTWARE.md).
 
@@ -53,6 +51,21 @@ The code has three 'modes': Rover, Base and Survey_In. The mode is set via pins 
 messages are logged to SD card in all three modes for post-processing with [rtklibexplorer's](https://rtklibexplorer.wordpress.com/) version of [RTKLIB](http://rtkexplorer.com/downloads/rtklib-code/).
 
 You will find settings in the code to help with debugging should you need it. Uncomment the line which contains **#define DEBUG** to enable them.
+
+## Updating the ZED-F9P firmware
+
+u-blox released [version 1.12](https://www.u-blox.com/sites/default/files/UBX_F9_100_HPG_112_ZED_F9P.a26bfd58dfd11c233f8fdba6b99adc5a.bin) of the ZED-F9P firmware
+on 12th July 2019. If you bought your device(s) before then, it would be beneficial to update. The update process is straight forward and can be done through
+[u-center](https://www.u-blox.com/en/product/u-center) **but the update can only be done through UART1. It will fail if you try to update through USB.**
+
+The [Arduino folder](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/tree/master/Arduino) contains a sketch called ZED-F9P_Echo. This will turn the Adalogger into
+a simple USB to UART pass-through which you can use to update the ZED-F9P using u-center. The code runs at **9600 Baud only** so you must tick the
+_Use this baudrate for update_ box and select 9600 from the drop-down list. The advice on the u-blox portal seems to be to select the _Use chip erase_ option too.
+
+Updating at 9600 Baud is very slow, but this is the only way to prevent Baud rate changes during the update. The Echo code is very simple and does not support
+baud rate changes. If you want to update more quickly, you can use (e.g.) an FTDI TTL-232R-3V3 cable to connect to the UART1 pins instead of the Adalogger.
+
+![Update](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/Update.JPG)
 
 ## Acknowledgements
 
