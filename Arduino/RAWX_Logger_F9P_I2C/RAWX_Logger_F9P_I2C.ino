@@ -33,6 +33,7 @@ const int dwell = 300;
 
 // Send serial debug messages
 //#define DEBUG // Comment this line out to disable debug messages
+//#define DEBUGi2c // Comment this line out to disable I2C debug messages
 
 // Debug SerialBuffer
 // Displays a "Max bufAvail:" message each time SerialBuffer.available reaches a new maximum
@@ -82,19 +83,6 @@ SFE_UBLOX_GPS i2cGPS;
 #endif
 #define LED_Brightness 32 // 0 - 255 for WB2812B
 #endif
-
-// Include the Adafruit GPS Library
-// https://github.com/adafruit/Adafruit_GPS
-// This is used at the start of the code to establish a fix and
-// provide the date and time for the RAWX log file filename
-#include <Adafruit_GPS.h>
-Adafruit_GPS GPS(&Serial1); // M0 hardware serial
-// Set GPSECHO to 'false' to turn off echoing the GPS data to the Serial console
-// Set to 'true' if you want to debug and listen to the raw GPS sentences
-#define GPSECHO false
-// this keeps track of whether we're using the interrupt
-// off by default!
-boolean usingInterrupt = false;
 
 // Fast SD card logging using Bill Greiman's SdFat
 // https://github.com/greiman/SdFat
@@ -194,17 +182,6 @@ int nmea_expected_csum2 = '0';
 #define max_nmea_len 100 // Maximum length for an NMEA message: use this to detect if we have lost sync while receiving an NMEA message
 
 // Definitions for u-blox F9P UBX-format (binary) messages
-// As a temporary fix, until multi-setVal is available, these messages are defined in SparkFun ubxPacket format:
-// Class, ID, Length, Counter, startingSpot, [payload], checksumA, checksumB, valid
-// ** Make sure that Length matches the payload length **
-// As these are all UBX-CFG-VALSET messages, the Class is always 0x06 and the ID is always 0x8a
-// The payload format is:
-// version, layers, reserved, reserved, key1, value1, key2, value2...
-// version is 0
-// layers: 0x01 for RAM, 0x02 for BBR, 0x04 for Flash. Setting layers to 0x07 would set the value in RAM, BBR and Flash
-// The VALSET message can hold a maximum of 64 key and value pairs
-// The sendCommand calls used to transmit each message will timeout as the commandAck checking in processUBXpacket expects the packet to be defined in packetCfg, not our custom packet!
-// Turn on DEBUG to see if the commands are acknowledged (Received: CLS:5 ID:1 Payload: 6 8A) or not acknowledged (CLS:5 ID:0)
 
 // Disable NMEA output on the I2C port
 // UBX-CFG-VALSET message with a key ID of 0x10720002 (CFG-I2COUTPROT-NMEA) and a value of 0
@@ -270,7 +247,7 @@ uint8_t setRAWXon() {
   return i2cGPS.sendCfgValset8(0x209100bb, 0x01); // This (re)enables the GGA mesage
 }
 
-// Enable the NMEA GGA and RMC messages and disable the GLL, GSA, GSV, VTG, and TXT(INF) messages
+// Enable the NMEA GGA and RMC messages on UART1
 // UBX-CFG-VALSET message with key IDs of:
 // 0x209100ca (CFG-MSGOUT-NMEA_ID_GLL_UART1)
 // 0x209100c0 (CFG-MSGOUT-NMEA_ID_GSA_UART1)
@@ -289,12 +266,22 @@ uint8_t setNMEAon() {
   return i2cGPS.sendCfgValset8(0x209100ac, 0x01);
 }
 
-// Disable the NMEA GGA and RMC messages
+// Disable the NMEA messages
 // UBX-CFG-VALSET message with key IDs of:
+// 0x209100ca (CFG-MSGOUT-NMEA_ID_GLL_UART1)
+// 0x209100c0 (CFG-MSGOUT-NMEA_ID_GSA_UART1)
+// 0x209100c5 (CFG-MSGOUT-NMEA_ID_GSV_UART1)
+// 0x209100b1 (CFG-MSGOUT-NMEA_ID_VTG_UART1)
+// 0x20920007 (CFG-INFMSG-NMEA_UART1)
 // 0x209100bb (CFG-MSGOUT-NMEA_ID_GGA_UART1)
 // 0x209100ac (CFG-MSGOUT-NMEA_ID_RMC_UART1)
 uint8_t setNMEAoff() {
-  i2cGPS.newCfgValset8(0x209100bb, 0x00, VAL_LAYER_RAM);
+  i2cGPS.newCfgValset8(0x209100ca, 0x00, VAL_LAYER_RAM);
+  i2cGPS.addCfgValset8(0x209100c0, 0x00);
+  i2cGPS.addCfgValset8(0x209100c5, 0x00);
+  i2cGPS.addCfgValset8(0x209100b1, 0x00);
+  i2cGPS.addCfgValset8(0x20920007, 0x00);
+  i2cGPS.addCfgValset8(0x209100bb, 0x00);
   return i2cGPS.sendCfgValset8(0x209100ac, 0x00);
 }
 
@@ -611,7 +598,7 @@ void setup()
   pinMode(SurveyInPin, INPUT_PULLUP);
 
   delay(10000); // Allow 10 sec for user to open serial monitor (Comment this line if required)
-  //while (!Serial); // OR Wait for user to run python script or open serial monitor (Comment this line as required)
+  //while (!Serial); // OR Wait for user to open the serial monitor (Comment this line as required)
 
   Serial.begin(115200);
 
@@ -657,7 +644,9 @@ void setup()
   Serial.println(F("Ublox GNSS found!"));
 
 #ifdef DEBUG
+#ifdef DEBUGi2c
   i2cGPS.enableDebugging(); //Enable debug messages over Serial (default)
+#endif
 #endif
 
   // These sendCommands will timeout as the commandAck checking in processUBXpacket expects the packet to be in packetCfg, not our custom packet!
@@ -665,8 +654,8 @@ void setup()
   boolean response = true;
   response &= disableI2cNMEA(); //Disable NMEA messages on the I2C port leaving it clear for UBX messages
   response &= setUART1BAUD(); // Change the UART1 baud rate to 230400
-  response &= setRAWXoff(); // Disable RAWX messages (on UART1). Also disables the NMEA high precision mode
-  response &= setNMEAon(); // Enable NMEA messages GGA and RMC; disable the others
+  response &= setRAWXoff(); // Disable RAWX messages on UART1. Also disables the NMEA high precision mode
+  response &= setNMEAoff(); // Disable NMEA messages on UART1
   response &= setTALKERID(); // Set NMEA TALKERID to GP
   response &= setRATE_1Hz(); // Set Navigation/Measurement Rate to 1Hz
   response &= setUART2BAUD_115200(); // Set UART2 Baud rate
@@ -707,9 +696,7 @@ void setup()
     //setNAVwrist(); // Set Wrist Navigation Mode
   }
 
-  GPS.begin(230400); // Start Serial1 at 230400 baud
-  delay(1100);
-  while(Serial1.available()){Serial1.read();} // Flush RX buffer so we don't confuse Adafruit_GPS with UBX acknowledgements
+  Serial1.begin(230400); // Start Serial1 at 230400 baud
 
   Serial.println("GNSS initialized!");
 
@@ -756,128 +743,123 @@ void loop() // run over and over again
 {
   switch(loop_step) {
     case init: {
-      // read data from the GNSS
-      char c = GPS.read();
-      // if you want to debug, this is a good time to do it!
-      if (GPSECHO)
-        if (c) Serial.print(c);
-      // if a sentence is received, we can check the checksum, parse it...
-      if (GPS.newNMEAreceived()) {
-        if (!GPS.parse(GPS.lastNMEA())) // this also sets the newNMEAreceived() flag to false
-          break; // we can fail to parse a sentence in which case we should just wait for another
+      delay(1000); //Don't pound too hard on the I2C bus
+
+#ifdef DEBUG
+      Serial.print("\nTime: ");
+      Serial.print(i2cGPS.getHour(), DEC); Serial.print(':');
+      Serial.print(i2cGPS.getMinute(), DEC); Serial.print(':');
+      Serial.print(i2cGPS.getSecond(), DEC); Serial.print('.');
+      Serial.println(i2cGPS.getMillisecond());
+      Serial.print("Date: ");
+      Serial.print(i2cGPS.getDay(), DEC); Serial.print('/');
+      Serial.print(i2cGPS.getMonth(), DEC); Serial.print("/");
+      Serial.println(i2cGPS.getYear(), DEC);
+      Serial.print("Fix: "); Serial.println((int)i2cGPS.getFixType());
+      if (i2cGPS.getFixType() > 0) {
+        Serial.print("Location: ");
+        float latitude = ((float)(i2cGPS.getLatitude())) / 10000000;
+        Serial.print(F("Lat: "));
+        Serial.print(latitude, 6);
+        float longitude = ((float)(i2cGPS.getLongitude())) / 10000000;
+        Serial.print(F(" Lon: "));
+        Serial.print(longitude, 6);
+        Serial.print(F(" (degrees)"));
+        float altitude = ((float)(i2cGPS.getAltitude())) / 1000;
+        Serial.print(F(" Alt: "));
+        Serial.print(altitude, 2);
+        Serial.println(F(" (m)"));
+
+        float speed = ((float)(i2cGPS.getGroundSpeed())) / 1000;
+        Serial.print("Ground Speed (m/s): "); Serial.println(speed, 3);
+        float heading = ((float)(i2cGPS.getHeading())) / 10000000;
+        Serial.print("Heading: "); Serial.println(heading, 1);
+        Serial.print("Satellites: "); Serial.println(i2cGPS.getSIV());
+        float PDOP = ((float)(i2cGPS.getPDOP())) / 100;
+        Serial.print("PDOP: "); Serial.println(PDOP, 2);
+      }
+#endif
+  
+      // read battery voltage
+      vbat = analogRead(A7) * (2.0 * 3.3 / 1023.0);
+#ifdef DEBUG
+      Serial.print("Battery(V): ");
+      Serial.println(vbat, 2);
+#endif
     
-#ifdef DEBUG
-        Serial.print("\nTime: ");
-        Serial.print(GPS.hour, DEC); Serial.print(':');
-        Serial.print(GPS.minute, DEC); Serial.print(':');
-        Serial.print(GPS.seconds, DEC); Serial.print('.');
-        Serial.println(GPS.milliseconds);
-        Serial.print("Date: ");
-        Serial.print(GPS.day, DEC); Serial.print('/');
-        Serial.print(GPS.month, DEC); Serial.print("/20");
-        Serial.println(GPS.year, DEC);
-        Serial.print("Fix: "); Serial.print((int)GPS.fix);
-        Serial.print(" Quality: "); Serial.println((int)GPS.fixquality);
-        if (GPS.fix) {
-          Serial.print("Location: ");
-          Serial.print(GPS.latitude, 4); Serial.print(GPS.lat);
-          Serial.print(", ");
-          Serial.print(GPS.longitude, 4); Serial.println(GPS.lon);
-          Serial.print("Speed (knots): "); Serial.println(GPS.speed);
-          Serial.print("Angle: "); Serial.println(GPS.angle);
-          Serial.print("Altitude: "); Serial.println(GPS.altitude);
-          Serial.print("Satellites: "); Serial.println((int)GPS.satellites);
-          Serial.print("HDOP: "); Serial.println(GPS.HDOP);
-        }
-#endif
-  
-        // read battery voltage
-        vbat = analogRead(A7) * (2.0 * 3.3 / 1023.0);
-#ifdef DEBUG
-        Serial.print("Battery(V): ");
-        Serial.println(vbat, 2);
-#endif
-      
-        // turn green LED on to indicate GNSS fix
-        // or set NeoPixel to cyan
-        if (GPS.fix) {
+      // turn green LED on to indicate GNSS fix
+      // or set NeoPixel to cyan
+      if (i2cGPS.getFixType() > 0) {
 #ifndef NoLED
 #ifdef NeoPixel
-          setLED(cyan); // Set NeoPixel to cyan
+        setLED(cyan); // Set NeoPixel to cyan
 #else
-          digitalWrite(GreenLED, HIGH);
+        digitalWrite(GreenLED, HIGH);
 #endif
 #endif
-          // increment valfix and cap at maxvalfix
-          // don't do anything fancy in terms of decrementing valfix as we want to keep logging even if the fix is lost
-          valfix += 1;
-          if (valfix > maxvalfix) valfix = maxvalfix;
-        }
-        else {
+        // increment valfix and cap at maxvalfix
+        // don't do anything fancy in terms of decrementing valfix as we want to keep logging even if the fix is lost
+        valfix += 1;
+        if (valfix > maxvalfix) valfix = maxvalfix;
+      }
+      else {
 #ifndef NoLED
 #ifdef NeoPixel
-          setLED(dim_cyan); // Set NeoPixel to dim cyan
+        setLED(dim_cyan); // Set NeoPixel to dim cyan
 #else
-          digitalWrite(GreenLED, LOW); // Turn green LED off
+        digitalWrite(GreenLED, LOW); // Turn green LED off
 #endif
 #endif
+      }
+
+      if (valfix == maxvalfix) { // wait until we have enough valid fixes
+        
+        // Set and start the RTC
+        alarmFlag = false; // Make sure alarm flag is clear
+        rtc.begin(); // Start the RTC
+        rtc.setTime(i2cGPS.getHour(), i2cGPS.getMinute(), i2cGPS.getSecond()); // Set the time
+        rtc.setDate(i2cGPS.getDay(), i2cGPS.getMonth(), (uint8_t)(i2cGPS.getYear() - 2000)); // Set the date
+        rtc.setAlarmSeconds(0); // Set RTC Alarm Seconds to zero
+        uint8_t nextAlarmMin = ((i2cGPS.getMinute()+INTERVAL)/INTERVAL)*INTERVAL; // Calculate next alarm minutes
+        nextAlarmMin = nextAlarmMin % 60; // Correct hour rollover
+        rtc.setAlarmMinutes(nextAlarmMin); // Set RTC Alarm Minutes
+        rtc.enableAlarm(rtc.MATCH_MMSS); // Alarm Match on minutes and seconds
+        rtc.attachInterrupt(alarmMatch); // Attach alarm interrupt
+
+        // check if voltage is > LOWBAT(V), if not then don't try to log any data
+        if (vbat < LOWBAT) {
+          Serial.println("Low Battery!");
+          break;
         }
-  
-        if (valfix == maxvalfix) { // wait until we have enough valid fixes
-          
-          // Set and start the RTC
-          alarmFlag = false; // Make sure alarm flag is clear
-          rtc.begin(); // Start the RTC
-          rtc.setTime(GPS.hour, GPS.minute, GPS.seconds); // Set the time
-          rtc.setDate(GPS.day, GPS.month, GPS.year); // Set the date
-          rtc.setAlarmSeconds(0); // Set RTC Alarm Seconds to zero
-          uint8_t nextAlarmMin = ((GPS.minute+INTERVAL)/INTERVAL)*INTERVAL; // Calculate next alarm minutes
-          nextAlarmMin = nextAlarmMin % 60; // Correct hour rollover
-          rtc.setAlarmMinutes(nextAlarmMin); // Set RTC Alarm Minutes
-          rtc.enableAlarm(rtc.MATCH_MMSS); // Alarm Match on minutes and seconds
-          rtc.attachInterrupt(alarmMatch); // Attach alarm interrupt
 
-          // check if voltage is > LOWBAT(V), if not then don't try to log any data
-          if (vbat < LOWBAT) {
-            Serial.println("Low Battery!");
-            break;
+        // Set the RAWX measurement rate
+        //setRATE_20Hz(); // Set Navigation/Measurement Rate to 20 Hz
+        //setRATE_10Hz(); // Set Navigation/Measurement Rate to 10 Hz
+        //setRATE_5Hz(); // Set Navigation/Measurement Rate to 5 Hz
+        setRATE_4Hz(); // Set Navigation/Measurement Rate to 4 Hz
+        //setRATE_2Hz(); // Set Navigation/Measurement Rate to 2 Hz
+        //setRATE_1Hz(); // Set Navigation/Measurement Rate to 1 Hz
+        
+        // If we are in BASE mode, check the SURVEY_IN pin
+        if (base_mode == true) {
+          if (digitalRead(SurveyInPin) == LOW) {
+            // We are in BASE mode and the SURVEY_IN pin is low so send the extra UBX messages:
+            Serial.println("SURVEY_IN mode selected");
+            survey_in_mode = true; // Set the survey_in_mode flag true
+            setRTCMon(); // Enable the RTCM messages on UART2
+            delay(1100);
+            setSurveyIn(); // Enable SURVEY_IN mode
+            delay(1100);
           }
-
-          // Disable the GPGGA and GPRMC messages
-          setNMEAoff();
-          delay(100);
-
-          // Set the RAWX measurement rate
-          //setRATE_20Hz(); // Set Navigation/Measurement Rate to 20 Hz
-          //setRATE_10Hz(); // Set Navigation/Measurement Rate to 10 Hz
-          //setRATE_5Hz(); // Set Navigation/Measurement Rate to 5 Hz
-          setRATE_4Hz(); // Set Navigation/Measurement Rate to 4 Hz
-          //setRATE_2Hz(); // Set Navigation/Measurement Rate to 2 Hz
-          //setRATE_1Hz(); // Set Navigation/Measurement Rate to 1 Hz
-          
-          delay(1100); // Wait
-
-          // If we are in BASE mode, check the SURVEY_IN pin
-          if (base_mode == true) {
-            if (digitalRead(SurveyInPin) == LOW) {
-              // We are in BASE mode and the SURVEY_IN pin is low so send the extra UBX messages:
-              Serial.println("SURVEY_IN mode selected");
-              survey_in_mode = true; // Set the survey_in_mode flag true
-              setRTCMon(); // Enable the RTCM messages on UART2
-              delay(1100);
-              setSurveyIn(); // Enable SURVEY_IN mode
-              delay(1100);
-            }
-          }
-          
-          while(Serial1.available()){Serial1.read();} // Flush RX buffer to clear UBX acknowledgements
-
-          // Now that Serial1 should be idle and the buffer empty, start TC3 interrupts to copy all new data into SerialBuffer
-          // Set the timer interval to 10 * 10 / 230400 = 0.000434 secs (10 bytes * 10 bits (1 start, 8 data, 1 stop) at 230400 baud)
-          startTimerInterval(0.000434); 
-          
-          loop_step = start_rawx; // start rawx messages
         }
+        
+        while(Serial1.available()){Serial1.read();} // Flush RX buffer to clear any old data
+
+        // Now that Serial1 should be idle and the buffer empty, start TC3 interrupts to copy all new data into SerialBuffer
+        // Set the timer interval to 10 * 10 / 230400 = 0.000434 secs (10 bytes * 10 bits (1 start, 8 data, 1 stop) at 230400 baud)
+        startTimerInterval(0.000434); 
+        
+        loop_step = start_rawx; // start rawx messages
       }
     }
     break;
