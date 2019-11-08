@@ -389,6 +389,13 @@ uint8_t setUART2nmea() {
   return i2cGPS.setVal8(0x10760002, 0x01, VAL_LAYER_RAM);
 }
 
+// 'Disable' timepulse TP1 by setting LEN_LOCK_TP1 to zero
+// (This doesn't actually disable the timepulse, it just sets its length to zero!)
+// UBX-CFG-VALSET message with key ID of 0x40050005 (CFG-TP-LEN_LOCK_TP1) and value of 0:
+uint8_t disableTP1() {
+  return i2cGPS.setVal32(0x40050005, 0, VAL_LAYER_RAM);
+}
+
 // ExtInt interrupt service routine
 void ExtInt() {
   ExtIntTimer = millis() + white_flash; // Set the timer value to white_flash milliseconds from now
@@ -695,6 +702,10 @@ void setup()
     //setNAVair4g(); // Set Airborne <4G Navigation Mode
     //setNAVwrist(); // Set Wrist Navigation Mode
   }
+
+#if defined(NoLED) || defined(NoLogLED)
+  disableTP1(); // Disable the timepulse to stop the LED from flashing
+#endif
 
   Serial1.begin(230400); // Start Serial1 at 230400 baud
 
