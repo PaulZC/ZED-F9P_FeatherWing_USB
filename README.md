@@ -37,6 +37,10 @@ The PCB thickness should be 0.8mm: see the microstrip calculations on the [Spark
 
 ## Arduino Code
 
+
+### **PLEASE NOTE:** the Arduino code in this repo is out-of-date. It uses the old version of the SparkFun u-blox Library. Please see the new [data logging examples in the SparkFun u-blox GNSS library](https://github.com/sparkfun/SparkFun_u-blox_GNSS_Arduino_Library/tree/main/examples/Data_Logging).
+
+
 Two versions of the Arduino code can be found in the [Arduino folder](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/tree/master/Arduino):
 
 - **RAWX_Logger_F9P** is very similar to the logger I wrote for the [NEO-M8T FeatherWing](https://github.com/PaulZC/NEO-M8T_GNSS_FeatherWing) but is substantially updated for the ZED-F9P.
