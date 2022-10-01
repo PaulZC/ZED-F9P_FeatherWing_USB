@@ -100,10 +100,9 @@ generate a TIM_TM2 message which can be logged to SD card and extracted with RTK
 
 You can isolate the Feather A2 pin by cutting the INT link.
 
-### The Small Print
+## Licence
 
-This project is distributed under a Creative Commons Attribution + Share-alike (BY-SA) licence.
-Please refer to section 5 of the licence for the "Disclaimer of Warranties and Limitation of Liability".
+Please see [LICENSE.md](./LICENSE.md) for details.
 
 Enjoy!
 

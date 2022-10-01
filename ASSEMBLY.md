@@ -124,10 +124,9 @@ I recommend giving the PCB a coat of lacquer, especially if you are intending to
 
 ![Assembly_11](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/Assembly_11.JPG)
 
-### The Small Print
+## Licence
 
-This project is distributed under a Creative Commons Attribution + Share-alike (BY-SA) licence.
-Please refer to section 5 of the licence for the "Disclaimer of Warranties and Limitation of Liability".
+Please see [LICENSE.md](./LICENSE.md) for details.
 
 Enjoy!
 
