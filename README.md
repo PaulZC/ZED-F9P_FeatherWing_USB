@@ -42,7 +42,7 @@ Two versions of the Arduino code can be found in the [Arduino folder](./Arduino)
 
 - **RAWX_Logger_F9P** is very similar to the logger I wrote for the [NEO-M8T FeatherWing](https://github.com/PaulZC/NEO-M8T_GNSS_FeatherWing) but is substantially updated for the ZED-F9P. It does all of the message configuration via UART1. **PLEASE NOTE:** this example is out-of-date as it uses the old version of the SparkFun u-blox Library.
 
-- **RAWX_Logger_F9P_I2C** uses **version 1.6** of the SparkFun Ublox library to do all of the message configuration via the I2C port instead of UART1. This makes
+- **RAWX_Logger_F9P_I2C** uses **version 3.1.5** of the SparkFun u-blox GNSS library to do all of the message configuration via the I2C port instead of UART1. This makes
 the code more efficient as it does not need to ignore the UBX ACK messages (on UART1) and can simply stream all data from UART1 to the SD card.
 
 You can find instructions on how to install the Arduino IDE and the required libraries [here](https://github.com/PaulZC/F9P_RAWX_Logger/blob/master/SOFTWARE.md).

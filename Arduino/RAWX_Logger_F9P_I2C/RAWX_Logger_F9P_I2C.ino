@@ -76,7 +76,7 @@ const int dwell = 300;
 
 // Include the SparkFun u-blox Library
 #include <Wire.h> //Needed for I2C to GPS
-#include <SparkFun_u-blox_GNSS_v3.h> //http://librarymanager/All#SparkFun_Ublox_GPS
+#include <SparkFun_u-blox_GNSS_v3.h> //http://librarymanager/All#SparkFun_u-blox_GNSS_v3
 SFE_UBLOX_GNSS i2cGPS;
 
 // LEDs
@@ -653,9 +653,9 @@ void setup()
 #endif
 #endif
 
-  if (i2cGPS.begin(Wire,0x42) == false) //Connect to the Ublox module using Wire port
+  if (i2cGPS.begin(Wire,0x42) == false) //Connect to the u-blox module using Wire port
   {
-    Serial.println(F("Panic!! Ublox GNSS not detected at default I2C address. Please check wiring. Freezing!"));
+    Serial.println(F("Panic!! u-blox GNSS not detected at default I2C address. Please check wiring. Freezing!"));
 #ifndef NoLED
 #ifdef NeoPixel
     setLED(red); // Set NeoPixel to red
@@ -665,7 +665,7 @@ void setup()
 #endif    
     while (1);
   }
-  Serial.println(F("Ublox GNSS found!"));
+  Serial.println(F("u-blox GNSS found!"));
 
   // These sendCommands will timeout as the commandAck checking in processUBXpacket expects the packet to be in packetCfg, not our custom packet!
   // Turn on DEBUG to see if the commands are acknowledged (Received: CLS:5 ID:1 Payload: 6 8A) or not acknowledged (CLS:5 ID:0)
