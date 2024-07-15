@@ -16,12 +16,12 @@ You will need to know the MAC ID's of both boards. You can either read this off 
 It is a 12 digit hexadecimal number starting with 000666.
 
 You can use the Adalogger as a USB to serial pass-though and configure the boards using the Arduino IDE serial monitor. The
-[Arduino folder](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/tree/master/Arduino) contains a sketch called 'Bluetooth_Mate_Echo'. This does the same job as
+[Arduino folder](./Arduino) contains a sketch called 'Bluetooth_Mate_Echo'. This does the same job as
 SparkFun's Passthrough sketch but will also blink the Adalogger's LEDs so you can see the serial port activity.
 
 Connect the Adalogger to the Mate as shown below:
 
-![Pairing](https://github.com/PaulZC/ZED-F9P_FeatherWing_USB/blob/master/img/Pairing.JPG)
+![Pairing](./img/Pairing.JPG)
 
 and then upload the Bluetooth_Mate_Echo sketch.
 
