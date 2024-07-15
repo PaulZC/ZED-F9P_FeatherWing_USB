@@ -1561,8 +1561,7 @@ void loop() // run over and over again
       Serial.println(bytes_written);
 #endif
       Serial.println("File closed!");
-      // An RTC alarm was detected, so set the RTC alarm time to the next INTERVAL and loop back to open_file.
-      // We only receive an RTC alarm on a minute mark, so it doesn't matter that the RTC seconds will have moved on at this point.
+      // An RTC alarm was detected, so add INTERVAL to the RTC alarm time and loop back to open_file.
       alarmFlag = false; // Clear the RTC alarm flag
       delay(1100); // Wait for 1s in case interval is 1440
       uint8_t alarmH = rtc.getAlarmHours();
