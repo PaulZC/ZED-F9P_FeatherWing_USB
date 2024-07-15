@@ -45,11 +45,11 @@
 // Define how long we should log in minutes before changing to a new file
 // Sensible values are: 5, 10, 15, 20, 30, 60, etc.
 // Max is 1440 (24 Hours)
-const int INTERVAL = 15;
+const int INTERVAL = 60;
 
 // Define how long we should wait in msec (approx.) for residual RAWX data before closing the last log file
-// For a measurement rate of 4Hz (250msec), 300msec is a sensible value. i.e. slightly more than one measurement interval
-const int dwell = 300;
+// For a measurement rate of 1Hz (1000msec), 1100msec is a sensible value. i.e. slightly more than one measurement interval
+const int dwell = 1100;
 
 // Send serial debug messages
 //#define DEBUG // Comment this line out to disable debug messages
@@ -876,6 +876,7 @@ void loop() // run over and over again
         rtc.begin(); // Start the RTC
         rtc.setTime(hour, min, sec); // Set the time
         rtc.setDate(day, month, (uint8_t)(year - 2000)); // Set the date
+        delay(1100); // Wait for 1s in case interval is 1440
         uint8_t nextAlarmHour = hour;
         uint16_t interval = INTERVAL; // Get the INTERVAL
         if (interval >= 1440) // Limit the interval to 24 hours
@@ -1563,6 +1564,7 @@ void loop() // run over and over again
       // An RTC alarm was detected, so set the RTC alarm time to the next INTERVAL and loop back to open_file.
       // We only receive an RTC alarm on a minute mark, so it doesn't matter that the RTC seconds will have moved on at this point.
       alarmFlag = false; // Clear the RTC alarm flag
+      delay(1100); // Wait for 1s in case interval is 1440
       uint8_t alarmH = rtc.getAlarmHours();
       uint16_t alarmM = rtc.getAlarmMinutes();
       uint8_t alarmS = rtc.getAlarmSeconds();
